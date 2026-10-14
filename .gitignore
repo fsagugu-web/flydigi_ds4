@@ -1,0 +1,9 @@
+build/
+out/
+tools/
+*.prx
+*.elf
+*.oelf
+*.o
+*.exe
+flydigi_ds4.txt

@@ -1,0 +1,35 @@
+flydigi_ds4 v1.3 - Flydigi Direwolf 2 (USB) como controle de PS4
+=================================================================
+
+Requisitos: PS4 desbloqueado com GoldHEN 2.4 ou mais novo.
+Testado em: firmware 12.52 + GoldHEN v2.4b18.7.
+
+INSTALAÇÃO (FileZilla, porta 2121)
+----------------------------------
+1. Envie flydigi_ds4.prx para  /data/GoldHEN/plugins/
+2. Envie flydigi_ds4.ini para  /data/GoldHEN/
+3. No /data/GoldHEN/plugins.ini (botão direito > Exibir/Editar),
+   adicione esta linha embaixo de [default]:
+
+       /data/GoldHEN/plugins/flydigi_ds4.prx
+
+   Se você não tiver um plugins.ini, envie o que vem neste zip.
+4. No menu do GoldHEN, ligue "Enable Plugins Loader".
+5. Ligue o Flydigi no cabo USB e abra um jogo.
+   Deve aparecer "Flydigi conectado".
+
+CONFIGURAÇÃO
+------------
+Edite /data/GoldHEN/flydigi_ds4.ini (remapear botões, zona morta,
+vibração, touchpad, giroscópio...). As explicações estão dentro dele.
+
+PROBLEMAS
+---------
+- Conecta e desconecta sozinho: troque o cabo USB.
+- Não conecta: coloque "log = sim" no .ini e veja
+  /data/GoldHEN/flydigi_ds4.txt
+- Jogo fecha: apague a linha do plugins.ini e avise no GitHub.
+- Para desinstalar: apague a linha do plugins.ini.
+
+Código, ajuda e doações: https://github.com/fsagugu-web/flydigi_ds4
+Licença GPL-3.0. Sem relação com Sony, Flydigi ou Microsoft.
