@@ -1,21 +1,22 @@
-# Histórico de versões
+# Changelog
 
-## v1.3 — primeira versão pública
+## v1.3 — first public release
 
-- Giroscópio experimental (`gyro = sim`): o movimento horizontal e vertical do Direwolf 2 vai para o giroscópio do DS4, com sensibilidade e inversão de eixos configuráveis
-- Touchpad com deslizar (`touchpad_mode = swipe`): segurando o View, o analógico direito vira o dedo no touchpad
-- Todo clique no touchpad agora vem com um dedo no centro, como num DS4 de verdade
-- Com `log = sim`, o log descreve todos os dispositivos USB, para ajudar a suportar outros controles
+- Experimental gyro (`gyro = yes`): the Direwolf 2's horizontal and vertical motion goes to the DS4 gyro, with configurable sensitivity and axis inversion
+- Touchpad swipe (`touchpad_mode = swipe`): while holding View, the right stick becomes a finger on the touchpad
+- Every touchpad click now comes with a finger in the centre, like a real DS4
+- With `log = yes`, the log describes every USB device, to help support other controllers
+- On-screen notifications, log and settings file are now in English; the Portuguese words (`sim`/`nao`, `XIS`, `BOLA`…) still work in `flydigi_ds4.ini`
 
 ## v1.1
 
-- Arquivo de configuração `/data/GoldHEN/flydigi_ds4.ini`: remapeamento (inclusive combinações), zona morta, gatilhos, vibração, avisos e log
-- Seções por jogo (`[CUSAxxxxx]`)
-- Aviso na tela com a linha do erro quando o arquivo tem algo errado
-- Log desligado por padrão
+- Settings file `/data/GoldHEN/flydigi_ds4.ini`: remapping (including combos), deadzones, triggers, rumble, notifications and log
+- Per-game sections (`[CUSAxxxxx]`)
+- On-screen notification with the line number when the file has a mistake
+- Log off by default
 
 ## v1.0
 
-- Flydigi Direwolf 2 por cabo USB funcionando como DS4 nos jogos: botões, analógicos, gatilhos analógicos e vibração
-- Funciona com o DS4 desligado
-- Conectar e desconectar com o jogo aberto
+- Flydigi Direwolf 2 over USB working as a DS4 in games: buttons, sticks, analog triggers and rumble
+- Works with the DS4 turned off
+- Plug and unplug while the game is running

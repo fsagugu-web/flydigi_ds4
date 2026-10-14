@@ -19,10 +19,14 @@ if ($LASTEXITCODE -ne 0) { throw 'tests failed' }
 & powershell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $Root 'build.ps1')
 if ($LASTEXITCODE -ne 0) { throw 'build failed' }
 
-foreach ($dir in $Repo, $Stage) {
-    if (Test-Path $dir) { Remove-Item -Recurse -Force $dir }
-    New-Item -ItemType Directory -Force $dir | Out-Null
+# The repository keeps its .git, so the next commit continues the published history.
+if (Test-Path $Repo) {
+    Get-ChildItem $Repo -Force | Where-Object { $_.Name -ne '.git' } | Remove-Item -Recurse -Force
+} else {
+    New-Item -ItemType Directory -Force $Repo | Out-Null
 }
+if (Test-Path $Stage) { Remove-Item -Recurse -Force $Stage }
+New-Item -ItemType Directory -Force $Stage | Out-Null
 if (Test-Path $Zip) { Remove-Item -Force $Zip }
 
 # Repository: everything except build output, local tools and dev leftovers.
@@ -32,6 +36,7 @@ Get-ChildItem $Root -Force | Where-Object { $_.Name -notin $exclude } | Copy-Ite
 # Release archive for players.
 Copy-Item (Join-Path $Root 'out\flydigi_ds4.prx') $Stage
 Copy-Item (Join-Path $Root 'config\flydigi_ds4.ini') $Stage
+Copy-Item (Join-Path $Root 'release\README.txt') $Stage
 Copy-Item (Join-Path $Root 'release\LEIA-ME.txt') $Stage
 Copy-Item (Join-Path $Root 'release\plugins.ini') $Stage
 Copy-Item (Join-Path $Root 'LICENSE') $Stage

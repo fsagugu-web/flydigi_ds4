@@ -13,7 +13,7 @@ static int g_failures;
 #define CHECK(cond)                                                  \
     do {                                                             \
         if (!(cond)) {                                               \
-            printf("FALHOU %s:%d: %s\n", __FILE__, __LINE__, #cond); \
+            printf("FAILED %s:%d: %s\n", __FILE__, __LINE__, #cond); \
             g_failures++;                                            \
         }                                                            \
     } while (0)
@@ -146,7 +146,7 @@ static void test_each_default_button(void) {
         Session s = session(defaults());
         FlydigiState st = feed_buttons(&s, 0, cases[i].xinput);
         if (st.buttons != cases[i].ds4) {
-            printf("FALHOU botao %s: esperado %08X, veio %08X\n", cases[i].name, cases[i].ds4, st.buttons);
+            printf("FAILED button %s: expected %08X, got %08X\n", cases[i].name, cases[i].ds4, st.buttons);
             g_failures++;
         }
     }
@@ -521,13 +521,47 @@ static void test_config_reports_errors(void) {
     config_parse(text, NULL, &cfg, &errors);
     CHECK(errors.count == 6);
     CHECK(errors.first_line == 3);
-    CHECK(strcmp(errors.first_message, "botao do PS4 desconhecido") == 0);
+    CHECK(strcmp(errors.first_message, "unknown PS4 button") == 0);
     CHECK(cfg.map[IN_B] == SCE_PAD_BUTTON_CIRCLE);
     CHECK(cfg.vibration == 100);
     CHECK(cfg.touchpad_mode == TOUCHPAD_CLICK);
 }
 
-int main(void) {
+// English is the documented spelling; the Portuguese words from v1.1 keep working.
+static void test_config_accepts_english_and_portuguese_words(void) {
+    FlydigiConfig cfg = parse(
+        "log = yes\n"
+        "gyro = on\n"
+        "notifications = no\n"
+        "gyro_invert_horizontal = true\n"
+        "gyro_invert_vertical = off\n"
+        "touchpad_mode = deslizar\n"
+        "A = xis\n");
+    CHECK(cfg.log && cfg.gyro && !cfg.notifications && cfg.gyro_invert_horizontal && !cfg.gyro_invert_vertical);
+    CHECK(cfg.touchpad_mode == TOUCHPAD_SWIPE);
+    CHECK(cfg.map[IN_A] == SCE_PAD_BUTTON_CROSS);
+}
+
+// The flydigi_ds4.ini shipped in the release must parse cleanly and change nothing.
+static void test_shipped_ini_matches_defaults(const char *path) {
+    static char text[16 * 1024];
+    FILE *f = fopen(path, "rb");
+    CHECK(f != NULL);
+    if (f == NULL) {
+        return;
+    }
+    size_t n = fread(text, 1, sizeof(text) - 1, f);
+    fclose(f);
+    text[n] = '\0';
+    FlydigiConfig cfg = defaults();
+    ConfigErrors errors;
+    config_parse(text, "CUSA17776", &cfg, &errors);
+    CHECK(errors.count == 0);
+    FlydigiConfig expected = defaults();
+    CHECK(memcmp(&cfg, &expected, sizeof(cfg)) == 0);
+}
+
+int main(int argc, char **argv) {
     test_real_reports();
     test_non_input_reports_are_ignored();
     test_each_default_button();
@@ -548,10 +582,14 @@ int main(void) {
     test_config_remap_and_options();
     test_config_game_section_overrides_default();
     test_config_reports_errors();
+    test_config_accepts_english_and_portuguese_words();
+    if (argc > 1) {
+        test_shipped_ini_matches_defaults(argv[1]);
+    }
     if (g_failures == 0) {
-        printf("OK: todos os testes passaram\n");
+        printf("OK: all tests passed\n");
         return 0;
     }
-    printf("%d falha(s)\n", g_failures);
+    printf("%d failure(s)\n", g_failures);
     return 1;
 }

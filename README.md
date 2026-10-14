@@ -1,93 +1,93 @@
 # flydigi_ds4
 
-**Use o seu controle Flydigi Direwolf 2 (USB) como se fosse um DualShock 4 nos jogos do PS4 desbloqueado.**
+**Use your Flydigi Direwolf 2 (USB) as a DualShock 4 in jailbroken PS4 games.**
 
-Plugin para o [GoldHEN](https://github.com/GoldHEN/GoldHEN) que lê o controle pela porta USB e entrega os comandos ao jogo no formato do DS4. Funciona **com o DS4 desligado**, não precisa de adaptador e é instalado com o FileZilla em poucos minutos.
+A [GoldHEN](https://github.com/GoldHEN/GoldHEN) plugin that reads the controller over USB and hands its input to the game as if it came from a DS4. It works **with the DS4 turned off**, needs no adapter, and installs with FileZilla in a few minutes.
 
-> *English summary at the end of this page.*
+> 🇧🇷 **[Leia em português](README.pt-BR.md)**
 
 ---
 
-## Por que isso existe
+## Why this exists
 
-O PS4 só aceita controles que se identificam como DualShock 4 e passam numa verificação criptográfica da Sony. Controles para PC (Flydigi, genéricos, 8BitDo…) falam "a língua do Xbox" e são simplesmente ignorados. A solução comum é comprar um adaptador.
+The PS4 only accepts controllers that identify as a DualShock 4 and pass Sony's cryptographic check. PC controllers (Flydigi, generic pads, 8BitDo…) speak "Xbox" and are simply ignored. The usual fix is buying an adapter.
 
-Este plugin resolve de outro jeito: ele roda **dentro do jogo**, lê o controle direto pela USB e entrega os botões ao jogo, que acha que está falando com um DS4. Como o sistema do PS4 nunca chega a ver o controle, não existe verificação de chave nem o limite de 8 minutos dos controles não licenciados.
+This plugin takes another route: it runs **inside the game**, reads the controller straight from USB and gives the buttons to the game, which thinks it is talking to a DS4. Because the PS4 system never sees the controller, there is no auth check and no 8-minute timeout for unlicensed controllers.
 
-## Recursos
+## Features
 
-- ✅ Todos os botões, analógicos e gatilhos analógicos
-- ✅ Vibração
-- ✅ Funciona com o DS4 desligado ou junto com ele (os dois ao mesmo tempo)
-- ✅ Conectar e desconectar o cabo com o jogo aberto
-- ✅ Arquivo de configuração: remapear botões (inclusive combinações), zona morta, gatilhos, vibração
-- ✅ Configuração diferente por jogo
-- ✅ Touchpad: clique, ou deslizar o dedo usando o analógico direito
-- 🧪 Giroscópio (experimental) para jogos com mira/câmera por movimento
-- ✅ Avisos na tela (conectado, desconectado, erro no arquivo de configuração)
+- ✅ All buttons, sticks and analog triggers
+- ✅ Rumble
+- ✅ Works with the DS4 turned off, or alongside it (both at once)
+- ✅ Plug and unplug the cable while the game is running
+- ✅ Settings file: button remapping (including combos), deadzones, triggers, rumble
+- ✅ Per-game settings
+- ✅ Touchpad: click, or swipe with the right stick
+- 🧪 Gyro (experimental) for games with motion aiming or motion camera
+- ✅ On-screen notifications (connected, disconnected, mistakes in the settings file)
 
-## Compatibilidade
+## Compatibility
 
-| | Situação |
+| | Status |
 |---|---|
-| **Console** | PS4 desbloqueado com GoldHEN 2.4 ou mais novo (com o carregador de plugins) |
-| **Testado em** | Firmware 12.52 + GoldHEN v2.4b18.7 |
-| **Flydigi Direwolf 2** (cabo USB) | ✅ Testado |
-| **Outros controles em modo XInput** (genéricos, 8BitDo, GameSir…) | Devem funcionar, mas não foram testados. [Conte como foi](#seu-controle-não-funcionou) |
-| **Controles de Xbox One / Series** | ❌ Não suportado (protocolo diferente) |
-| **Bluetooth / receptor sem fio** | ❌ Só cabo USB (o Bluetooth é controlado pelo sistema) |
-| **Jogos testados** | CUSA17776. Testou outro? Abra uma *issue* contando! |
+| **Console** | Jailbroken PS4 with GoldHEN 2.4 or newer (with the plugin loader) |
+| **Tested on** | Firmware 12.52 + GoldHEN v2.4b18.7 |
+| **Flydigi Direwolf 2** (USB cable) | ✅ Tested |
+| **Other XInput controllers** (generic, 8BitDo, GameSir…) | Should work, but untested. [Tell us how it went](#controller-not-working) |
+| **Xbox One / Series controllers** | ❌ Not supported (different protocol) |
+| **Bluetooth / wireless dongle** | ❌ USB cable only (Bluetooth is owned by the system) |
+| **Tested games** | CUSA17776. Tried another one? Open an *issue* and tell us! |
 
-## Instalação
+## Installation
 
-Você precisa do FileZilla (ou outro cliente FTP) e do GoldHEN com o servidor FTP ligado (porta **2121**).
+You need FileZilla (or any FTP client) and GoldHEN with its FTP server on (port **2121**).
 
-1. Baixe o arquivo `flydigi_ds4-v1.3.zip` na página de [Releases](../../releases) e extraia.
-2. No FileZilla, conecte no IP do PS4, porta `2121`.
-3. Envie **`flydigi_ds4.prx`** para `/data/GoldHEN/plugins/`
-4. Envie **`flydigi_ds4.ini`** para `/data/GoldHEN/`
-5. Adicione o plugin ao arquivo `/data/GoldHEN/plugins.ini`:
-   - Clique com o botão direito em `plugins.ini` → **Exibir/Editar**
-   - Embaixo da linha `[default]`, adicione:
+1. Download `flydigi_ds4-v1.3.zip` from the [Releases](../../releases) page and extract it.
+2. In FileZilla, connect to the PS4's IP address, port `2121`.
+3. Upload **`flydigi_ds4.prx`** to `/data/GoldHEN/plugins/`
+4. Upload **`flydigi_ds4.ini`** to `/data/GoldHEN/`
+5. Add the plugin to `/data/GoldHEN/plugins.ini`:
+   - Right-click `plugins.ini` → **View/Edit**
+   - Under the `[default]` line, add:
      ```
      /data/GoldHEN/plugins/flydigi_ds4.prx
      ```
-   - Salve, feche e confirme o envio de volta. *(Se o arquivo não existir, envie o `plugins.ini` que vem no zip.)*
-6. No menu do GoldHEN, confirme que **Enable Plugins Loader** está ligado.
-7. Ligue o Flydigi no cabo USB e abra um jogo. Alguns segundos depois aparece **"Flydigi conectado"**.
+   - Save, close and confirm the upload. *(If the file does not exist, upload the `plugins.ini` from the zip.)*
+6. In the GoldHEN menu, make sure **Enable Plugins Loader** is on.
+7. Plug the Flydigi in with the USB cable and start a game. A few seconds later you will see **"Flydigi connected"**.
 
-Para desinstalar, apague a linha do `plugins.ini`.
+To uninstall, delete the line from `plugins.ini`.
 
-## Mapa de botões padrão
+## Default button map
 
 | Flydigi | PS4 |
 |---|---|
 | A / B / X / Y | ✕ / ○ / □ / △ |
 | LB / RB | L1 / R1 |
-| LT / RT | L2 / R2 (analógicos) |
+| LT / RT | L2 / R2 (analog) |
 | Menu (Start) | Options |
-| View (Back) | Clique do touchpad |
-| L3 / R3, analógicos, direcional | iguais |
-| Botão Flydigi/Home | nada (o botão PS é do sistema) |
+| View (Back) | Touchpad click |
+| L3 / R3, sticks, d-pad | same |
+| Flydigi/Home button | nothing (the PS button belongs to the system) |
 
-## Configuração
+## Settings
 
-Tudo fica em `/data/GoldHEN/flydigi_ds4.ini`, que você edita pelo FileZilla (botão direito → **Exibir/Editar**). As mudanças valem na próxima vez que abrir um jogo. Se escrever algo errado, aparece um aviso na tela dizendo a linha.
+Everything lives in `/data/GoldHEN/flydigi_ds4.ini`, which you edit through FileZilla (right-click → **View/Edit**). Changes apply the next time you start a game. If something is wrong, an on-screen notification tells you the line.
 
-| Opção | Valores | Padrão | O que faz |
+| Option | Values | Default | What it does |
 |---|---|---|---|
-| `A`, `B`, `X`, `Y`, `LB`, `RB`, `LT`, `RT`, `START`, `BACK`, `GUIDE`, `L3`, `R3`, `UP`, `DOWN`, `LEFT`, `RIGHT` | `CROSS` (`XIS`), `CIRCLE` (`BOLA`), `SQUARE` (`QUADRADO`), `TRIANGLE` (`TRIANGULO`), `L1`, `R1`, `L2`, `R2`, `L3`, `R3`, `OPTIONS`, `TOUCHPAD`, `UP`, `DOWN`, `LEFT`, `RIGHT`, `NONE` | tabela acima | Remapeia o botão. Aceita combinação: `LB = L1+R1` |
-| `deadzone_left`, `deadzone_right` | 0 a 50 (%) | 9 | Zona morta dos analógicos |
-| `trigger_threshold` | 1 a 100 (%) | 8 | Quanto apertar LT/RT para contar como apertado |
-| `vibration` | 0 a 100 (%) | 100 | Intensidade da vibração |
-| `touchpad_mode` | `click` ou `swipe` | `click` | Veja [Touchpad](#touchpad) |
-| `gyro` | `sim` / `nao` | `nao` | Veja [Giroscópio](#giroscópio-experimental) |
-| `gyro_sensitivity` | 1 a 500 (%) | 100 | Sensibilidade do giroscópio |
-| `gyro_invert_horizontal`, `gyro_invert_vertical` | `sim` / `nao` | `nao` | Inverte um eixo do giroscópio |
-| `notifications` | `sim` / `nao` | `sim` | Avisos de conectado/desconectado |
-| `log` | `sim` / `nao` | `nao` | Grava `/data/GoldHEN/flydigi_ds4.txt` para diagnóstico |
+| `A`, `B`, `X`, `Y`, `LB`, `RB`, `LT`, `RT`, `START`, `BACK`, `GUIDE`, `L3`, `R3`, `UP`, `DOWN`, `LEFT`, `RIGHT` | `CROSS`, `CIRCLE`, `SQUARE`, `TRIANGLE`, `L1`, `R1`, `L2`, `R2`, `L3`, `R3`, `OPTIONS`, `TOUCHPAD`, `UP`, `DOWN`, `LEFT`, `RIGHT`, `NONE` | table above | Remaps the button. Combos work too: `LB = L1+R1` |
+| `deadzone_left`, `deadzone_right` | 0 to 50 (%) | 9 | Stick deadzone |
+| `trigger_threshold` | 1 to 100 (%) | 8 | How far LT/RT must be pressed to count as pressed |
+| `vibration` | 0 to 100 (%) | 100 | Rumble strength |
+| `touchpad_mode` | `click` or `swipe` | `click` | See [Touchpad](#touchpad) |
+| `gyro` | `yes` / `no` | `no` | See [Gyro](#gyro-experimental) |
+| `gyro_sensitivity` | 1 to 500 (%) | 100 | Gyro sensitivity |
+| `gyro_invert_horizontal`, `gyro_invert_vertical` | `yes` / `no` | `no` | Inverts one gyro axis |
+| `notifications` | `yes` / `no` | `yes` | Connected/disconnected notifications |
+| `log` | `yes` / `no` | `no` | Writes `/data/GoldHEN/flydigi_ds4.txt` for troubleshooting |
 
-**Configuração por jogo:** crie uma seção com o código do jogo e coloque só o que muda nele:
+**Per-game settings:** add a section named after the game's ID and put only what changes in it:
 
 ```ini
 [default]
@@ -101,114 +101,102 @@ B = CROSS
 
 ### Touchpad
 
-- `touchpad_mode = click`: o View clica no touchpad.
-- `touchpad_mode = swipe`: segurando o View, o **analógico direito vira o dedo** no touchpad, para deslizar.
-  - Toque rápido no View: clique
-  - Segurar o View parado por meio segundo: clique segurado
-  - R3 enquanto segura o View: clique no ponto onde o dedo está
-  - Soltando o View, o analógico volta a controlar a câmera
+- `touchpad_mode = click`: View clicks the touchpad.
+- `touchpad_mode = swipe`: while you hold View, the **right stick becomes your finger** on the touchpad, so you can swipe.
+  - Quick tap on View: click
+  - Hold View still for half a second: click and hold
+  - R3 while holding View: click where the finger is
+  - Release View and the right stick controls the camera again
 
-### Giroscópio (experimental)
+### Gyro (experimental)
 
-Com `gyro = sim`, o movimento do Direwolf 2 vai para o giroscópio do DS4, para jogos com mira ou câmera por movimento.
+With `gyro = yes`, the Direwolf 2's motion goes to the DS4 gyro, for games with motion aiming or motion camera.
 
-No modo USB o Direwolf 2 só informa o movimento **horizontal e vertical**, já processado. Não tem inclinação nem acelerômetro, então jogos que usam o controle como volante ou nível não vão funcionar. A direção e a escala foram calibradas com testes de movimento, mas podem variar de jogo para jogo: se a mira andar ao contrário, use `gyro_invert_horizontal` / `gyro_invert_vertical`, e ajuste a força com `gyro_sensitivity`.
+Over USB the Direwolf 2 only reports **horizontal and vertical** motion, already processed. There is no tilt and no accelerometer, so games that use the controller as a steering wheel or a level will not work. Direction and scale were calibrated with motion tests but may vary between games: if the aim moves the wrong way, use `gyro_invert_horizontal` / `gyro_invert_vertical`, and tune the strength with `gyro_sensitivity`.
 
-## Limitações
+## Limitations
 
-- **Botão PS e Share** continuam só no DS4: são do sistema, não do jogo.
-- **Menu do PS4** (fora dos jogos) continua precisando do DS4 ou do app PS4 Second Screen no celular.
-- **Um controle só**: não existe jogador 2 pelo plugin, porque o PS4 só cria o jogador 2 quando outro usuário entra com um controle reconhecido pelo sistema.
-- Não usar junto com o plugin `gamepad_helper` (os dois mexem na mesma parte do jogo).
+- **PS and Share buttons** stay on the DS4: they belong to the system, not the game.
+- **The PS4 menus** (outside games) still need the DS4 or the PS4 Second Screen app on your phone.
+- **One controller only**: the plugin cannot add a player 2, because the PS4 only creates player 2 when another user signs in with a controller the system recognizes.
+- Do not use it together with the `gamepad_helper` plugin (both patch the same part of the game).
 
-## Problemas comuns
+## Troubleshooting
 
-**O controle conecta e desconecta sozinho**
-Troque o cabo USB. Cabo ruim foi exatamente o que causou isso nos testes.
+**The controller keeps connecting and disconnecting**
+Replace the USB cable. A bad cable is exactly what caused this during testing.
 
-**Não aparece "Flydigi conectado"**
-Confirme que o `Enable Plugins Loader` está ligado, que a linha está no `plugins.ini` e que o controle foi ligado no cabo antes ou durante o jogo. Ligue `log = sim` e veja o arquivo `/data/GoldHEN/flydigi_ds4.txt`.
+**"Flydigi connected" never shows up**
+Check that `Enable Plugins Loader` is on, that the line is in `plugins.ini`, and that the controller was plugged in before or during the game. Set `log = yes` and look at `/data/GoldHEN/flydigi_ds4.txt`.
 
-**O jogo fecha ao abrir**
-Apague a linha do `plugins.ini` e abra uma *issue* com o código do jogo (CUSAxxxxx) e o log.
+**The game closes when it starts**
+Delete the line from `plugins.ini` and open an *issue* with the game ID (CUSAxxxxx) and the log.
 
-**O controle continua vibrando depois de fechar o jogo**
-Tire e recoloque o cabo.
+**The controller keeps rumbling after closing the game**
+Unplug the cable and plug it back in.
 
-## Seu controle não funcionou?
+## Controller not working?
 
-Dá para adicionar suporte sem eu ter o controle:
+Support can be added without me owning the controller:
 
-1. No `flydigi_ds4.ini`, coloque `log = sim`
-2. Ligue o controle e abra um jogo
-3. Baixe `/data/GoldHEN/flydigi_ds4.txt` e anexe numa [issue](../../issues/new/choose)
+1. In `flydigi_ds4.ini`, set `log = yes`
+2. Plug the controller in and start a game
+3. Download `/data/GoldHEN/flydigi_ds4.txt` and attach it to an [issue](../../issues/new/choose)
 
-O log descreve tudo que estiver ligado na USB, que é o que eu preciso para entender o controle.
+The log describes everything connected over USB, which is what I need to understand the controller.
 
-## Compilando (Windows)
+## Building (Windows)
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File setup.ps1          # baixa o toolchain (~350 MB)
-powershell -ExecutionPolicy Bypass -File tests\run_tests.ps1 # testes no PC
-powershell -ExecutionPolicy Bypass -File build.ps1           # gera out\flydigi_ds4.prx
+powershell -ExecutionPolicy Bypass -File setup.ps1          # downloads the toolchain (~350 MB)
+powershell -ExecutionPolicy Bypass -File tests\run_tests.ps1 # PC-side tests
+powershell -ExecutionPolicy Bypass -File build.ps1           # builds out\flydigi_ds4.prx
 ```
 
-Usa [llvm-mingw](https://github.com/mstorsjo/llvm-mingw), o [OpenOrbis PS4 Toolchain](https://github.com/OpenOrbis/OpenOrbis-PS4-Toolchain) e o [GoldHEN Plugins SDK](https://github.com/GoldHEN/GoldHEN_Plugins_SDK), em versões fixas baixadas pelo `setup.ps1`.
+Uses [llvm-mingw](https://github.com/mstorsjo/llvm-mingw), the [OpenOrbis PS4 Toolchain](https://github.com/OpenOrbis/OpenOrbis-PS4-Toolchain) and the [GoldHEN Plugins SDK](https://github.com/GoldHEN/GoldHEN_Plugins_SDK), at pinned versions downloaded by `setup.ps1`.
 
-### Como funciona por dentro
+### How it works inside
 
-| Arquivo | Função |
+| File | Role |
 |---|---|
-| `source/main.c` | Intercepta `scePadRead`/`scePadReadState` (mesma técnica do plugin oficial `gamepad_helper`) e mistura o Flydigi aos dados do DS4; repassa a vibração |
-| `source/usb.c` | Thread que encontra o controle (qualquer interface XInput `FF/5D/01`), lê os relatórios pela `libSceUsbd` e reconecta sozinha |
-| `source/xinput.c` | Relatório USB do Xbox 360 → estado neutro (`RawPad`), incluindo os bytes de movimento do Direwolf 2 |
-| `source/translate.c` | `RawPad` → DS4, aplicando a configuração e o touchpad |
-| `source/gyro.c` | Movimento → velocidade angular do giroscópio do DS4 |
-| `source/config.c` | Leitor do `flydigi_ds4.ini` |
-| `tests/tests.c` | Testes no PC, incluindo relatórios e movimentos reais capturados do Direwolf 2 |
+| `source/main.c` | Hooks `scePadRead`/`scePadReadState` (same technique as the official `gamepad_helper` plugin), merges the Flydigi into the DS4 data and forwards rumble |
+| `source/usb.c` | Thread that finds the controller (any XInput `FF/5D/01` interface), reads its reports through `libSceUsbd` and reconnects on its own |
+| `source/xinput.c` | Xbox 360 USB report → neutral state (`RawPad`), including the Direwolf 2's motion bytes |
+| `source/translate.c` | `RawPad` → DS4, applying the settings and the touchpad |
+| `source/gyro.c` | Motion → DS4 gyro angular velocity |
+| `source/config.c` | `flydigi_ds4.ini` parser |
+| `tests/tests.c` | PC-side tests, including real reports and motion captured from a Direwolf 2 |
 
-## Créditos
+## Credits
 
-- [GoldHEN](https://github.com/GoldHEN) — SDK de plugins e a técnica de interceptar o controle do plugin `gamepad_helper` (por [jocover](https://github.com/jocover))
-- [OpenOrbis](https://github.com/OpenOrbis) — toolchain de homebrew para PS4
-- [llvm-mingw](https://github.com/mstorsjo/llvm-mingw) — compilador
+- [GoldHEN](https://github.com/GoldHEN) — plugin SDK, and the pad hooking technique from the `gamepad_helper` plugin (by [jocover](https://github.com/jocover))
+- [OpenOrbis](https://github.com/OpenOrbis) — PS4 homebrew toolchain
+- [llvm-mingw](https://github.com/mstorsjo/llvm-mingw) — compiler
 
-Detalhes das licenças em [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+License details in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
 
-## Licença e aviso
+## License and disclaimer
 
-Código aberto sob a licença **GPL-3.0** ([LICENSE](LICENSE)). Você pode usar, estudar, modificar e redistribuir, desde que mantenha o código aberto sob a mesma licença.
+Open source under the **GPL-3.0** license ([LICENSE](LICENSE)). You may use, study, modify and redistribute it, as long as it stays open source under the same license.
 
-Projeto independente, **sem relação com Sony, Flydigi ou Microsoft**. PlayStation, DualShock e PS4 são marcas da Sony Interactive Entertainment; Flydigi e Xbox pertencem aos seus donos. Use em consoles que são seus, por sua conta e risco. Este projeto não tem nenhuma relação com pirataria e não deve ser usado para isso.
+Independent project, **not affiliated with Sony, Flydigi or Microsoft**. PlayStation, DualShock and PS4 are trademarks of Sony Interactive Entertainment; Flydigi and Xbox belong to their respective owners. Use it on consoles you own, at your own risk. This project has nothing to do with piracy and must not be used for it.
 
 ---
 
-## ☕ Apoie o projeto
+## ☕ Support the project
 
-O flydigi_ds4 é e vai continuar sendo **gratuito e de código aberto**. Ele nasceu de uma frustração simples: um controle bom, que eu já tinha, que o PS4 se recusava a reconhecer. Foram muitas horas de engenharia reversa, testes no console e ajustes até chegar aqui.
+flydigi_ds4 is and will stay **free and open source**. It came from a simple frustration: a good controller I already owned that the PS4 refused to recognize. It took many hours of reverse engineering, console testing and tweaking to get here.
 
-Se o plugin te poupou a compra de um adaptador, ou simplesmente fez você voltar a jogar com o controle que você gosta, considere fazer uma doação de qualquer valor. Ela ajuda a manter o projeto vivo, a comprar outros controles para testar e a responder as *issues* com calma.
+If the plugin saved you from buying an adapter, or just got you playing again with the controller you like, please consider a donation of any amount. It keeps the project alive, buys other controllers to test and gives me time to answer *issues* properly.
 
 <table>
   <tr>
     <td align="center">
-      <b>PIX</b><br><br>
-      <!-- Opcional: gere o QR Code no app do banco, salve como docs/pix-qrcode.png e apague a linha de comentário abaixo -->
-      <!-- <img src="docs/pix-qrcode.png" width="180" alt="QR Code PIX"><br><br> -->
-      Chave aleatória:<br>
+      <b>Pix</b> (Brazil)<br><br>
+      Random key:<br>
       <code>b5a43469-bdb5-417d-9d75-68f3427b6f67</code>
     </td>
   </tr>
 </table>
 
-Não pode doar? Tudo bem! Deixar uma ⭐ no repositório, contar em quais jogos funcionou ou indicar para um amigo também ajuda muito. **Obrigado!** 💙
-
----
-
-## English summary
-
-**flydigi_ds4** is a GoldHEN plugin that makes a **Flydigi Direwolf 2** (USB cable, XInput mode) work as a DualShock 4 in jailbroken PS4 games. No adapter, no auth bypass: it runs inside the game, reads the controller through `libSceUsbd` and merges it into what the game gets from `libScePad`. Works with the DS4 turned off.
-
-Features: all buttons, sticks, analog triggers, rumble, hot-plug, remapping and per-game settings (`flydigi_ds4.ini`), touchpad click/swipe, experimental gyro. Tested on FW 12.52 + GoldHEN v2.4b18.7. Other XInput controllers should work but are untested; Xbox One/Series pads are not supported.
-
-Install: copy `flydigi_ds4.prx` to `/data/GoldHEN/plugins/`, `flydigi_ds4.ini` to `/data/GoldHEN/`, and add `/data/GoldHEN/plugins/flydigi_ds4.prx` under `[default]` in `/data/GoldHEN/plugins.ini`. Licensed under GPL-3.0. Not affiliated with Sony, Flydigi or Microsoft.
+Can't donate? No problem! A ⭐ on the repository, telling us which games work, or recommending it to a friend helps a lot too. **Thank you!** 💙

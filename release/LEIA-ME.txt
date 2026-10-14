@@ -16,17 +16,19 @@ INSTALAÇÃO (FileZilla, porta 2121)
    Se você não tiver um plugins.ini, envie o que vem neste zip.
 4. No menu do GoldHEN, ligue "Enable Plugins Loader".
 5. Ligue o Flydigi no cabo USB e abra um jogo.
-   Deve aparecer "Flydigi conectado".
+   Deve aparecer "Flydigi connected".
 
 CONFIGURAÇÃO
 ------------
 Edite /data/GoldHEN/flydigi_ds4.ini (remapear botões, zona morta,
-vibração, touchpad, giroscópio...). As explicações estão dentro dele.
+vibração, touchpad, giroscópio...). Os comentários dentro dele estão
+em inglês; a explicação em português está no README.pt-BR.md do GitHub.
+Onde o valor é yes/no, também vale escrever sim/nao.
 
 PROBLEMAS
 ---------
 - Conecta e desconecta sozinho: troque o cabo USB.
-- Não conecta: coloque "log = sim" no .ini e veja
+- Não conecta: coloque "log = yes" no .ini e veja
   /data/GoldHEN/flydigi_ds4.txt
 - Jogo fecha: apague a linha do plugins.ini e avise no GitHub.
 - Para desinstalar: apague a linha do plugins.ini.

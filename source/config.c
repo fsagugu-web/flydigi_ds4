@@ -174,59 +174,59 @@ static bool parse_buttons(char *value, uint32_t *out) {
 static const char *apply_option(FlydigiConfig *cfg, const char *key, char *value) {
     for (size_t i = 0; i < sizeof(k_input_names) / sizeof(k_input_names[0]); i++) {
         if (equals_ignore_case(key, k_input_names[i].name)) {
-            return parse_buttons(value, &cfg->map[k_input_names[i].input]) ? NULL : "botao do PS4 desconhecido";
+            return parse_buttons(value, &cfg->map[k_input_names[i].input]) ? NULL : "unknown PS4 button";
         }
     }
     int percent;
     if (equals_ignore_case(key, "deadzone_left")) {
         if (!parse_percent(value, 0, 50, &percent)) {
-            return "use um numero de 0 a 50";
+            return "use a number from 0 to 50";
         }
         cfg->deadzone_left = percent * 32767 / 100;
         return NULL;
     }
     if (equals_ignore_case(key, "deadzone_right")) {
         if (!parse_percent(value, 0, 50, &percent)) {
-            return "use um numero de 0 a 50";
+            return "use a number from 0 to 50";
         }
         cfg->deadzone_right = percent * 32767 / 100;
         return NULL;
     }
     if (equals_ignore_case(key, "trigger_threshold")) {
         if (!parse_percent(value, 1, 100, &percent)) {
-            return "use um numero de 1 a 100";
+            return "use a number from 1 to 100";
         }
         cfg->trigger_threshold = (uint8_t)(percent * 255 / 100);
         return NULL;
     }
     if (equals_ignore_case(key, "vibration")) {
         if (!parse_percent(value, 0, 100, &percent)) {
-            return "use um numero de 0 a 100";
+            return "use a number from 0 to 100";
         }
         cfg->vibration = (uint8_t)percent;
         return NULL;
     }
     if (equals_ignore_case(key, "log")) {
-        return parse_bool(value, &cfg->log) ? NULL : "use sim ou nao";
+        return parse_bool(value, &cfg->log) ? NULL : "use yes or no";
     }
     if (equals_ignore_case(key, "notifications")) {
-        return parse_bool(value, &cfg->notifications) ? NULL : "use sim ou nao";
+        return parse_bool(value, &cfg->notifications) ? NULL : "use yes or no";
     }
     if (equals_ignore_case(key, "gyro")) {
-        return parse_bool(value, &cfg->gyro) ? NULL : "use sim ou nao";
+        return parse_bool(value, &cfg->gyro) ? NULL : "use yes or no";
     }
     if (equals_ignore_case(key, "gyro_sensitivity")) {
         if (!parse_percent(value, 1, 500, &percent)) {
-            return "use um numero de 1 a 500";
+            return "use a number from 1 to 500";
         }
         cfg->gyro_sensitivity = (uint16_t)percent;
         return NULL;
     }
     if (equals_ignore_case(key, "gyro_invert_horizontal")) {
-        return parse_bool(value, &cfg->gyro_invert_horizontal) ? NULL : "use sim ou nao";
+        return parse_bool(value, &cfg->gyro_invert_horizontal) ? NULL : "use yes or no";
     }
     if (equals_ignore_case(key, "gyro_invert_vertical")) {
-        return parse_bool(value, &cfg->gyro_invert_vertical) ? NULL : "use sim ou nao";
+        return parse_bool(value, &cfg->gyro_invert_vertical) ? NULL : "use yes or no";
     }
     if (equals_ignore_case(key, "touchpad_mode")) {
         if (equals_ignore_case(value, "click") || equals_ignore_case(value, "clique")) {
@@ -234,11 +234,11 @@ static const char *apply_option(FlydigiConfig *cfg, const char *key, char *value
         } else if (equals_ignore_case(value, "swipe") || equals_ignore_case(value, "deslizar")) {
             cfg->touchpad_mode = TOUCHPAD_SWIPE;
         } else {
-            return "use click ou swipe";
+            return "use click or swipe";
         }
         return NULL;
     }
-    return "opcao desconhecida";
+    return "unknown option";
 }
 
 static void record_error(ConfigErrors *errors, int line, const char *message) {
@@ -299,7 +299,7 @@ void config_parse(const char *text, const char *titleid, FlydigiConfig *cfg, Con
             }
             char *equals = strchr(content, '=');
             if (equals == NULL) {
-                record_error(errors, line_number, "falta o sinal =");
+                record_error(errors, line_number, "missing =");
                 continue;
             }
             *equals = '\0';

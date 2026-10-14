@@ -20,5 +20,5 @@ New-Item -ItemType Directory -Force (Join-Path $Root 'build') | Out-Null
 $Sources = @('xinput.c', 'translate.c', 'gyro.c', 'config.c') | ForEach-Object { Join-Path $Root "source\$_" }
 & $Clang -Wall -Werror -I (Join-Path $Root 'include') (Join-Path $PSScriptRoot 'tests.c') @Sources -o $Exe
 if ($LASTEXITCODE -ne 0) { throw 'test build failed' }
-& $Exe
+& $Exe (Join-Path $Root 'config\flydigi_ds4.ini')
 exit $LASTEXITCODE

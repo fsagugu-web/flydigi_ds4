@@ -152,7 +152,7 @@ static int load_usbd(void) {
             *slot = NULL;
         }
         if (*slot == NULL && k_usbd_symbols[i].required) {
-            log_line("simbolo obrigatorio ausente: %s\n", k_usbd_symbols[i].name);
+            log_line("missing required symbol: %s\n", k_usbd_symbols[i].name);
             return -1;
         }
     }
@@ -249,19 +249,19 @@ static bool try_open_device(void *usb_dev, const UsbDeviceDescriptor *desc, bool
     void *handle = NULL;
     if (g_usbd.Open(usb_dev, &handle) != 0 || handle == NULL) {
         if (verbose) {
-            log_line("  nao abriu\n");
+            log_line("  could not open\n");
         }
         return false;
     }
     uint8_t cfg[512];
     int cfg_len = read_config_descriptor(handle, cfg, sizeof(cfg));
     if (verbose) {
-        log_string_descriptor(handle, "fabricante", desc->iManufacturer);
-        log_string_descriptor(handle, "produto", desc->iProduct);
+        log_string_descriptor(handle, "manufacturer", desc->iManufacturer);
+        log_string_descriptor(handle, "product", desc->iProduct);
     }
     if (cfg_len <= 0 || !find_xinput_interface(cfg, cfg_len, out)) {
         if (verbose) {
-            log_line("  sem interface XInput (ainda nao suportado). Descritor:\n");
+            log_line("  no XInput interface (not supported yet). Descriptor:\n");
             if (cfg_len > 0) {
                 log_hex("  cfg ", cfg, cfg_len);
             }
@@ -276,14 +276,14 @@ static bool try_open_device(void *usb_dev, const UsbDeviceDescriptor *desc, bool
     }
     int32_t ret = g_usbd.ClaimInterface(handle, out->iface);
     if (ret != 0) {
-        log_line("%04X:%04X: interface %d nao liberada (0x%08X)\n", desc->idVendor, desc->idProduct, out->iface, ret);
+        log_line("%04X:%04X: could not claim interface %d (0x%08X)\n", desc->idVendor, desc->idProduct, out->iface, ret);
         if (out->detached && g_usbd.AttachKernelDriver) {
             g_usbd.AttachKernelDriver(handle, out->iface);
         }
         g_usbd.Close(handle);
         return false;
     }
-    log_line("controle %04X:%04X aberto: interface %d, IN 0x%02X, OUT 0x%02X\n", desc->idVendor, desc->idProduct,
+    log_line("controller %04X:%04X opened: interface %d, IN 0x%02X, OUT 0x%02X\n", desc->idVendor, desc->idProduct,
              out->iface, out->ep_in, out->ep_out);
     uint8_t led[3] = {0x01, 0x03, 0x06}; // player 1 LED
     send_out(out, led, sizeof(led));
@@ -311,8 +311,8 @@ static bool open_controller(Device *out) {
         }
         bool skip = is_never_touch(&desc);
         if (verbose) {
-            log_line("usb: %04X:%04X classe %02X/%02X/%02X%s\n", desc.idVendor, desc.idProduct, desc.bDeviceClass,
-                     desc.bDeviceSubClass, desc.bDeviceProtocol, skip ? " (ignorado)" : "");
+            log_line("usb: %04X:%04X class %02X/%02X/%02X%s\n", desc.idVendor, desc.idProduct, desc.bDeviceClass,
+                     desc.bDeviceSubClass, desc.bDeviceProtocol, skip ? " (skipped)" : "");
         }
         if (!skip) {
             opened = try_open_device(list[i], &desc, verbose, out);
@@ -341,7 +341,7 @@ static void log_input_change(const RawPad *pad, int *logged) {
         return;
     }
     (*logged)++;
-    log_line("entrada: botoes %05X  LT %3u  RT %3u  LX %6d  LY %6d  RX %6d  RY %6d\n", pad->inputs, pad->lt, pad->rt,
+    log_line("input: buttons %05X  LT %3u  RT %3u  LX %6d  LY %6d  RX %6d  RY %6d\n", pad->inputs, pad->lt, pad->rt,
              pad->lx, pad->ly, pad->rx, pad->ry);
 }
 
@@ -385,7 +385,7 @@ static void run_controller(const Device *dev) {
             have_pad = false;
             publish_state(&k_neutral_state);
             if (++fast_errors >= FAST_ERRORS_BEFORE_RECONNECT) {
-                log_line("leitura falhou: 0x%08X\n", ret);
+                log_line("read failed: 0x%08X\n", ret);
                 return;
             }
             sceKernelUsleep(5000);
@@ -440,13 +440,13 @@ static void *usb_thread(void *arg) {
         notify("%s", g_startup_notice);
     }
     if (load_usbd() != 0) {
-        notify("Flydigi: biblioteca USB indisponivel neste jogo");
+        notify("Flydigi: USB library not available in this game");
         return NULL;
     }
     int32_t ret = g_usbd.Init();
     if (ret != 0) {
         log_line("sceUsbdInit = 0x%08X\n", ret);
-        notify("Flydigi: falha ao iniciar USB (0x%08X)", ret);
+        notify("Flydigi: USB init failed (0x%08X)", ret);
         return NULL;
     }
 
@@ -456,7 +456,7 @@ static void *usb_thread(void *arg) {
         memset(&dev, 0, sizeof(dev));
         if (!open_controller(&dev)) {
             if (!announced_missing) {
-                log_line("nenhum controle XInput encontrado, tentando a cada 2 s\n");
+                log_line("no XInput controller found, retrying every 2 s\n");
                 announced_missing = true;
             }
             sceKernelUsleep(RESCAN_DELAY_US);
@@ -466,7 +466,7 @@ static void *usb_thread(void *arg) {
         publish_state(&k_neutral_state);
         __atomic_store_n(&g_connected, true, __ATOMIC_RELEASE);
         if (g_config.notifications) {
-            notify("Flydigi conectado");
+            notify("Flydigi connected");
         }
 
         run_controller(&dev);
@@ -476,7 +476,7 @@ static void *usb_thread(void *arg) {
         close_controller(&dev);
         if (__atomic_load_n(&g_running, __ATOMIC_ACQUIRE)) {
             if (g_config.notifications) {
-                notify("Flydigi desconectado");
+                notify("Flydigi disconnected");
             }
             sceKernelUsleep(RESCAN_DELAY_US);
         }

@@ -24,7 +24,7 @@
 #define attr_public __attribute__((visibility("default")))
 
 attr_public const char *g_pluginName = "flydigi_ds4";
-attr_public const char *g_pluginDesc = "Flydigi Direwolf 2 (USB) como controle de PS4";
+attr_public const char *g_pluginDesc = "Flydigi Direwolf 2 (USB) as a PS4 controller";
 attr_public const char *g_pluginAuth = "flydigi_ds4";
 attr_public uint32_t g_pluginVersion = 0x00000130; // 1.30
 
@@ -154,7 +154,7 @@ static const char *load_config(const char *titleid, bool *found) {
     if (errors.count == 0) {
         return NULL;
     }
-    snprintf(notice, sizeof(notice), "flydigi_ds4.ini: %d erro(s). Linha %d: %s", errors.count, errors.first_line,
+    snprintf(notice, sizeof(notice), "flydigi_ds4.ini: %d error(s). Line %d: %s", errors.count, errors.first_line,
              errors.first_message);
     return notice;
 }
@@ -171,10 +171,10 @@ int32_t attr_public plugin_load(int32_t argc, const char *argv[]) {
     }
     log_line("flydigi_ds4 v1.3 | GoldHEN SDK 0x%08X\n", sys_sdk_version());
     if (have_info) {
-        log_line("jogo: %s (%s) versao %s\n", info.titleid, info.name, info.version);
+        log_line("game: %s (%s) version %s\n", info.titleid, info.name, info.version);
     }
-    log_line("config: %s%s\n", config_found ? CONFIG_PATH : "padrao (arquivo nao encontrado)",
-             notice ? " - com erros" : "");
+    log_line("config: %s%s\n", config_found ? CONFIG_PATH : "defaults (file not found)",
+             notice ? " - with errors" : "");
     if (notice) {
         log_line("%s\n", notice);
     }
@@ -201,7 +201,7 @@ int32_t attr_public plugin_load(int32_t argc, const char *argv[]) {
     HOOK32(scePadRead);
     HOOK32(scePadReadState);
     HOOK32(scePadSetVibration);
-    log_line("ganchos instalados: read %p, readState %p, vibration %p\n", Detour_scePadRead.StubPtr,
+    log_line("hooks installed: read %p, readState %p, vibration %p\n", Detour_scePadRead.StubPtr,
              Detour_scePadReadState.StubPtr, Detour_scePadSetVibration.StubPtr);
 
     flydigi_start(notice);
@@ -215,7 +215,7 @@ int32_t attr_public plugin_unload(int32_t argc, const char *argv[]) {
     UNHOOK(scePadSetVibration);
     Patcher_Destroy(&g_read_ext_patcher);
     Patcher_Destroy(&g_read_state_ext_patcher);
-    log_line("plugin descarregado\n");
+    log_line("plugin unloaded\n");
     log_close();
     return 0;
 }

@@ -78,5 +78,5 @@ void notify(const char *fmt, ...) {
     req.targetId = -1;
     strcpy(req.iconUri, "cxml://psnotification/tex_icon_system");
     sceKernelSendNotificationRequest(0, &req, sizeof(req), 0);
-    log_line("[aviso na tela] %s\n", req.message);
+    log_line("[notification] %s\n", req.message);
 }
